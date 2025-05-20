@@ -1,7 +1,13 @@
 pipeline {
-  agent any
+  agent none
   stages {
     stage('build') {
+      agent {
+        docker {
+          image 'maven:3.9.6-eclipse-temurin-17'
+        }
+
+      }
       steps {
         echo 'compile maven app'
         sh 'mvn compile'
@@ -9,6 +15,7 @@ pipeline {
     }
 
     stage('test') {
+      agent any
       steps {
         echo 'test maven app'
         sh 'mvn clean test'
@@ -16,6 +23,7 @@ pipeline {
     }
 
     stage('package') {
+      agent any
       steps {
         echo 'package maven app'
         sh 'mvn package -DskipTests'
